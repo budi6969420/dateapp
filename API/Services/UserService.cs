@@ -40,6 +40,22 @@ namespace DateAppApi.Services
             await m_context.SaveChangesAsync();
             return newUser;
         }
+
+        public async Task<User?> GetUserAsync(int id)
+        {
+            return await m_context.Users
+                .Include(x => x.CreatedDateIdeas)
+                .Include(x => x.CreatedDates)
+                .Include(x => x.PartOfDates)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<IEnumerable<User>> GetAllUserAsync()
+        {
+            return m_context.Users.Include(x => x.CreatedDateIdeas)
+                .Include(x => x.CreatedDates)
+                .Include(x => x.PartOfDates);
+        }
         #endregion
 
         #region private fields and constants

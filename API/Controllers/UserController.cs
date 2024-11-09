@@ -1,6 +1,8 @@
 ﻿// ------------------------------------------------------------------
 // © Copyright 2024 Thermo Fisher Scientific Inc. All rights reserved.
 // ------------------------------------------------------------------
+using DateAppApi.Core;
+using DateAppApi.DbContexts;
 using DateAppApi.Dtos;
 using DateAppApi.Dtos.User;
 using DateAppApi.IServices;
@@ -10,13 +12,41 @@ namespace DateAppApi.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class UserController : ControllerBase
+    public class UserController : BaseAuthController
     {
         public UserController(IJwtService jwtService,
-            IUserService userService)
+            AppDbContext context,
+            IUserService userService) : base(jwtService, context)
         {
             m_jwtService = jwtService;
             m_userService = userService;
+        }
+
+        [HttpGet("self")]
+        public async Task<IActionResult> GetSelf()
+        {
+            if (!TryAuthenticate(out _)) return Unauthorized();
+            var id = GetId();
+            var user = await m_userService.GetUserAsync(id);
+            if (user == null) return NotFound();
+            return Ok(user.ToDto());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get(int id)
+        {
+            if (!TryAuthenticate(out _)) return Unauthorized();
+            var user = await m_userService.GetUserAsync(id);
+            if (user == null) return NotFound();
+            return Ok(user.ToDto());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            if (!TryAuthenticate(out _)) return Unauthorized();
+            var users = await m_userService.GetAllUserAsync();
+            return Ok(users.Select(x => x.ToDto()));
         }
 
         [HttpPost("login")]

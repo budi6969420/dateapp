@@ -9,4 +9,6 @@ public interface IUserService
 {
     Task<User> EnsureLoginOkAsync(string username, string password);
     Task<User> RegisterAsync(string username, string password);
+    Task<User?> GetUserAsync(int id);
+    Task<IEnumerable<User>> GetAllUserAsync();
 }

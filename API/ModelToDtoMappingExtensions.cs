@@ -3,6 +3,7 @@
 // ------------------------------------------------------------------
 using DateAppApi.Dtos.Date;
 using DateAppApi.Dtos.DateIdea;
+using DateAppApi.Dtos.User;
 using DateAppApi.Models;
 
 namespace DateAppApi
@@ -32,6 +33,20 @@ namespace DateAppApi
                 DateIdeaIds = model.DateIdeas.Select(x => x.Id).ToArray(),
                 ImageIds = model.Images.Select(x => x.Id).ToArray(),
                 Description = model.Description,
+            };
+        }
+
+        public static UserGetDto ToDto(this User user)
+        {
+            return new UserGetDto()
+            {
+                Id = user.Id,
+                Gender = user.Gender,
+                Username = user.Username,
+                ProfilePictureId = user.ProfilePictureId,
+                CreatedDateIdeaIds = user.CreatedDateIdeas.Select(x => x.Id).ToArray(),
+                CreatedDateIds = user.CreatedDates.Select(x => x.Id).ToArray(),
+                PartOfDateIds = user.PartOfDates.Select(x => x.Id).ToArray()
             };
         }
     }

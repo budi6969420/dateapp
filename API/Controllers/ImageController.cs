@@ -20,6 +20,7 @@ namespace DateAppApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(int id)
         {
+            if (!TryAuthenticate(out _)) return Unauthorized();
             var image = await m_context.Images.FindAsync(id);
             if (image == null) return NotFound();
             return File(image.Data, "image/jpeg");
