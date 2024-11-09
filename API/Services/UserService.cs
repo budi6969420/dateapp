@@ -17,11 +17,12 @@ namespace DateAppApi.Services
         }
 
         #region IUserService Members
-        public async Task LoginAsync(string username, string password)
+        public async Task<User> EnsureLoginOkAsync(string username, string password)
         {
             var user = await m_context.Users.FirstOrDefaultAsync(x => x.Username.Equals(username));
             if (user == null) throw new KeyNotFoundException("username not linked to account");
             if (user.HashedPassword != PasswordHashingHelper.HashPassword(password)) throw new UnauthorizedAccessException();
+            return user;
         }
 
         public async Task<User> RegisterAsync(string username, string password)
