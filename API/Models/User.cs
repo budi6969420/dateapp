@@ -1,0 +1,18 @@
+﻿// ------------------------------------------------------------------
+// © Copyright 2024 Thermo Fisher Scientific Inc. All rights reserved.
+// ------------------------------------------------------------------
+namespace DateAppApi.Models
+{
+    public class User
+    {
+        public int Id { get; set; }
+        public string Username { get; set; }
+        public char Gender { get; set; }
+        public int? ProfilePictureId { get; set; }
+        public DateTime TimeJoined { get; set; }
+        public string HashedPassword { get; set; }
+        public List<DateIdea> CreatedDateIdeas { get; set; } = new List<DateIdea>();
+        public List<Date> CreatedDates { get; set; } = new List<Date>();
+        public List<Date> PartOfDates { get; set; } = new List<Date>();
+    }
+}
