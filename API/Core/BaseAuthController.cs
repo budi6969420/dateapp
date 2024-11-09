@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DateAppApi.Core
 {
-    public class AuthController : ControllerBase
+    public abstract class BaseAuthController : ControllerBase
     {
-        public AuthController(IJwtService jwtService, AppDbContext context)
+        protected BaseAuthController(IJwtService jwtService, AppDbContext context)
         {
             m_jwtService = jwtService;
             m_context = context;
@@ -26,6 +26,13 @@ namespace DateAppApi.Core
             user = m_context.Users.Find(id);
 
             return user != null;
+        }
+
+        protected int GetId()
+        {
+            if (!TryGetToken(out var token)) throw new UnauthorizedAccessException();
+
+            return m_jwtService.GetUserIdFromToken(token);
         }
 
         private bool TryGetToken(out string token)
