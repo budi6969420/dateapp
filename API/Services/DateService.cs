@@ -2,18 +2,21 @@
 // © Copyright 2024 Thermo Fisher Scientific Inc. All rights reserved.
 // ------------------------------------------------------------------
 using DateAppApi.DbContexts;
+using DateAppApi.IServices;
 using DateAppApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DateAppApi.Services
 {
     public class DateService
+        : IDateService
     {
         public DateService(AppDbContext context)
         {
             m_context = context;
         }
 
+        #region IDateService Members
         public async Task<Date> CreateDateAsync(int creatingUserId,
             int otherUserId,
             string description,
@@ -93,12 +96,12 @@ namespace DateAppApi.Services
             await AddImageToDateInternalAsync(date, imageData);
         }
 
-        public async Task RemoveImageToDateAsync(int dateId, int userId, int imageId)
+        public async Task RemoveImageFromDateAsync(int dateId, int userId, int imageId)
         {
             var date = await m_context.Dates.FindAsync(dateId);
             if (date == null) throw new KeyNotFoundException("date does not exist");
             if (date.CreatingUserId != userId) throw new UnauthorizedAccessException();
-            await RemoveImageToDateInternalAsync(date, imageId);
+            await RemoveImageFromDateInternalAsync(date, imageId);
         }
 
         public async Task AddDateIdeaToDateAsync(int dateId, int userId, int dateIdea)
@@ -109,13 +112,14 @@ namespace DateAppApi.Services
             await AddDateIdeaToDateInternalAsync(date, dateIdea);
         }
 
-        public async Task RemoveDateIdeaToDateAsync(int dateId, int userId, int dateIdea)
+        public async Task RemoveDateIdeaFromDateAsync(int dateId, int userId, int dateIdea)
         {
             var date = await m_context.Dates.FindAsync(dateId);
             if (date == null) throw new KeyNotFoundException("date does not exist");
             if (date.CreatingUserId != userId) throw new UnauthorizedAccessException();
-            await RemoveDateIdeaToDateInternalAsync(date, dateIdea);
+            await RemoveDateIdeaFromDateInternalAsync(date, dateIdea);
         }
+        #endregion
 
         private async Task AddImageToDateInternalAsync(Date date, byte[] imageData, bool saveChanged = true)
         {
@@ -135,14 +139,14 @@ namespace DateAppApi.Services
             if (saveChanges) await m_context.SaveChangesAsync();
         }
 
-        private async Task RemoveImageToDateInternalAsync(Date date, int imageId, bool saveChanged = true)
+        private async Task RemoveImageFromDateInternalAsync(Date date, int imageId, bool saveChanged = true)
         {
             var image = await m_context.Images.FindAsync(imageId);
             if (image != null) date.Images.Remove(image);
             if (saveChanged) await m_context.SaveChangesAsync();
         }
 
-        private async Task RemoveDateIdeaToDateInternalAsync(Date date, int dateIdeaId, bool saveChanges = true)
+        private async Task RemoveDateIdeaFromDateInternalAsync(Date date, int dateIdeaId, bool saveChanges = true)
         {
             var dateIdea = await m_context.DateIdeas.FindAsync(dateIdeaId);
             if (dateIdea != null) date.DateIdeas.Remove(dateIdea);
