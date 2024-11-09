@@ -1,7 +1,7 @@
 ﻿// ------------------------------------------------------------------
 // © Copyright 2024 Thermo Fisher Scientific Inc. All rights reserved.
 // ------------------------------------------------------------------
-namespace DateAppApi.Dtos
+namespace DateAppApi.Dtos.User
 {
     public class RegisterDto
     {

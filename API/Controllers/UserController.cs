@@ -2,6 +2,7 @@
 // © Copyright 2024 Thermo Fisher Scientific Inc. All rights reserved.
 // ------------------------------------------------------------------
 using DateAppApi.Dtos;
+using DateAppApi.Dtos.User;
 using DateAppApi.IServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ namespace DateAppApi.Controllers
             m_userService = userService;
         }
 
+        [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             var user = await m_userService.EnsureLoginOkAsync(loginDto.Username, loginDto.Password);
@@ -28,6 +30,7 @@ namespace DateAppApi.Controllers
             });
         }
 
+        [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
             var user = await m_userService.RegisterAsync(registerDto.Username, registerDto.Password);

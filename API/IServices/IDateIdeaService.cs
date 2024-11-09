@@ -10,4 +10,5 @@ public interface IDateIdeaService
     Task<DateIdea> CreateDateIdeaAsync(int creatingUserId, string description);
     Task DeleteDateIdea(int userId, int dateIdeaId);
     Task<DateIdea> UpdateDateIdea(int userId, int dateIdeaId, string newDescription);
+    Task<DateIdea?> GetDateIdea(int dateIdeaId);
 }

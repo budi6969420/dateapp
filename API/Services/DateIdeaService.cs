@@ -62,6 +62,14 @@ namespace DateAppApi.Services
             await m_context.SaveChangesAsync();
             return dateIdea;
         }
+
+        public async Task<DateIdea?> GetDateIdea(int dateIdeaId)
+        {
+            return await m_context.DateIdeas
+                .Include(x => x.CreatingUser)
+                .Include(x => x.DatesPresentOn)
+                .FirstOrDefaultAsync(x => x.Id == dateIdeaId);
+        }
         #endregion
 
         #region private fields and constants
