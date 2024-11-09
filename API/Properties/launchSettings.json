@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "FinanceAppAPI": {
+    "DateApp": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
