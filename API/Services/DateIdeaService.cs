@@ -63,7 +63,7 @@ namespace DateAppApi.Services
             return dateIdea;
         }
 
-        public async Task<DateIdea?> GetDateIdea(int dateIdeaId)
+        public async Task<DateIdea?> GetDateIdeaAsync(int dateIdeaId)
         {
             return await m_context.DateIdeas
                 .Include(x => x.CreatingUser)

@@ -22,7 +22,7 @@ namespace DateAppApi.Controllers
         public async Task<IActionResult> GetDateIdea(int id)
         {
             if (!TryAuthenticate(out _)) return Unauthorized();
-            var dateIdea = await m_dateIdeaService.GetDateIdea(id);
+            var dateIdea = await m_dateIdeaService.GetDateIdeaAsync(id);
             if (dateIdea == null) return NotFound();
             return Ok(dateIdea.ToDto());
         }

@@ -8,8 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DateAppApi.Services
 {
-    public class DateService
-        : IDateService
+    public class DateService : IDateService
     {
         public DateService(AppDbContext context)
         {
@@ -19,7 +18,7 @@ namespace DateAppApi.Services
         #region IDateService Members
         public async Task<Date> CreateDateAsync(int creatingUserId,
             int otherUserId,
-            string description,
+            string? description,
             DateTime dateStartDate,
             DateTime dateEndDate,
             IEnumerable<int> dateIdeaIds,
@@ -28,7 +27,6 @@ namespace DateAppApi.Services
             if (await m_context.Users.FindAsync(creatingUserId) == null) throw new KeyNotFoundException("creating user does not exist");
             if (await m_context.Users.FindAsync(otherUserId) == null) throw new KeyNotFoundException("other user does not exist");
 
-            if (string.IsNullOrEmpty(description)) throw new InvalidOperationException("description cant be empty");
             if (dateStartDate > dateEndDate) throw new InvalidOperationException("start date can not be after end date");
 
             var date = new Date()
@@ -68,7 +66,7 @@ namespace DateAppApi.Services
             await m_context.SaveChangesAsync();
         }
 
-        public async Task<Date> UpdateDateAsync(int userId, int dateId, string newDescription, DateTime newDateStartDate, DateTime newDateEndDate)
+        public async Task<Date> UpdateDateAsync(int userId, int dateId, string? newDescription, DateTime newDateStartDate, DateTime newDateEndDate)
         {
             var date = await m_context.Dates
                 .Include(x => x.CreatingUser)
@@ -76,7 +74,7 @@ namespace DateAppApi.Services
 
             if (date == null) throw new KeyNotFoundException("date does not exist");
             if (date.CreatingUserId != userId) throw new UnauthorizedAccessException();
-            if (string.IsNullOrEmpty(newDescription)) throw new InvalidOperationException("new description cant be empty");
+
             if (newDateStartDate > newDateEndDate) throw new InvalidOperationException("start date can not be after end date");
 
             date.Description = newDescription;
@@ -118,6 +116,16 @@ namespace DateAppApi.Services
             if (date == null) throw new KeyNotFoundException("date does not exist");
             if (date.CreatingUserId != userId) throw new UnauthorizedAccessException();
             await RemoveDateIdeaFromDateInternalAsync(date, dateIdea);
+        }
+
+        public async Task<Date?> GetDateAsync(int id)
+        {
+            return await m_context.Dates
+                .Include(x => x.DateIdeas)
+                .Include(x => x.CreatingUser)
+                .Include(x => x.OtherUser)
+                .Include(x => x.Images)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
         #endregion
 
