@@ -2,6 +2,8 @@
 // © Copyright 2024 Thermo Fisher Scientific Inc. All rights reserved.
 // ------------------------------------------------------------------
 using DateAppApi.DbContexts;
+using DateAppApi.IServices;
+using DateAppApi.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +22,11 @@ builder.Services.AddCors(options =>
 });
 
 // Add services to the container.
+
+builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IDateService, DateService>();
+builder.Services.AddScoped<IDateIdeaService, DateIdeaService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
