@@ -10,10 +10,10 @@ namespace DateAppApi.Models
         public User CreatingUser { get; set; }
         public int OtherUserId { get; set; }
         public User OtherUser { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public List<DateIdea> DateIdeas { get; set; } = new List<DateIdea>();
         public DateTime DateStartDate { get; set; }
         public DateTime DateEndDate { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
     }
 }

@@ -7,7 +7,7 @@ namespace DateAppApi.Models
     {
         public int Id { get; set; }
         public byte[] Data { get; set; }
-        public DateTime CreateDateTime { get; set; }
+        public DateTime CreateDateTime { get; set; } = DateTime.UtcNow;
         public User? ProfilePictureOfUser { get; set; }
         public Date? PictureOfDate { get; set; }
     }
