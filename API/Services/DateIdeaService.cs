@@ -19,6 +19,8 @@ namespace DateAppApi.Services
         public async Task<DateIdea> CreateDateIdeaAsync(int creatingUserId, string description)
         {
             if (await m_context.Users.FindAsync(creatingUserId) == null) throw new KeyNotFoundException("no such user exists");
+
+            if (string.IsNullOrEmpty(description)) throw new InvalidOperationException("description cant be empty");
             var dateIdea = new DateIdea()
             {
                 Description = description,

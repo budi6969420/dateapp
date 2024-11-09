@@ -95,6 +95,12 @@ namespace DateAppApi.DbContexts
             modelBuilder.Entity<Date>()
                 .HasMany(e => e.DateIdeas)
                 .WithMany(e => e.DatesPresentOn);
+
+            modelBuilder.Entity<Date>()
+                .HasMany(e => e.Images)
+                .WithOne(e => e.PictureOfDate)
+                .HasForeignKey(e => e.PictureOfDateId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
