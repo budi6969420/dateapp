@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------
 using Microsoft.EntityFrameworkCore;
 
-namespace JamJunctionApi.DbContexts
+namespace DateAppApi.DbContexts
 {
     public class AppDbContext(DbContextOptions options) : DbContext(options)
     {
