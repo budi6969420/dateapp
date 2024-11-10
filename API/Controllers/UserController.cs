@@ -42,10 +42,10 @@ namespace DateAppApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public IActionResult GetAll()
         {
             if (!TryAuthenticate(out _)) return Unauthorized();
-            var users = await m_userService.GetAllUserAsync();
+            var users = m_userService.GetAllUsers();
             return Ok(users.Select(x => x.ToDto()));
         }
 

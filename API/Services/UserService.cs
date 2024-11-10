@@ -51,7 +51,7 @@ namespace DateAppApi.Services
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<User>> GetAllUserAsync()
+        public IEnumerable<User> GetAllUsers()
         {
             return m_context.Users.Include(x => x.CreatedDateIdeas)
                 .Include(x => x.CreatedDates)

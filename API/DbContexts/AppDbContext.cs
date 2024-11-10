@@ -4,6 +4,7 @@
 using DateAppApi.Models;
 using Microsoft.EntityFrameworkCore;
 
+#pragma warning disable CS8618
 namespace DateAppApi.DbContexts
 {
     public class AppDbContext : DbContext

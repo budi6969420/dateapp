@@ -3,6 +3,7 @@
 // ------------------------------------------------------------------
 namespace DateAppApi.Models
 {
+#pragma warning disable CS8618
     public class DateIdea
     {
         public int Id { get; set; }
