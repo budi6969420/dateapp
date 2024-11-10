@@ -9,7 +9,7 @@ namespace DateAppApi.Models
         public string Username { get; set; }
         public char Gender { get; set; }
         public int? ProfilePictureId { get; set; }
-        public Image ProfilePicture { get; set; }
+        public Image? ProfilePicture { get; set; }
         public DateTime TimeJoined { get; set; } = DateTime.UtcNow;
         public string HashedPassword { get; set; }
         public List<DateIdea> CreatedDateIdeas { get; set; } = new List<DateIdea>();

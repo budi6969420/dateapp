@@ -1,11 +1,10 @@
 ﻿// ------------------------------------------------------------------
 // © Copyright 2024 Thermo Fisher Scientific Inc. All rights reserved.
 // ------------------------------------------------------------------
-namespace DateAppApi.Dtos
+namespace DateAppApi
 {
-    public class TokenDto
+    public static class GlobalConstants
     {
-        public string Token { get; set; }
-        public int ExpiresIn { get; } = (int)GlobalConstants.JwtLifeSpan.TotalSeconds;
+        public static TimeSpan JwtLifeSpan = TimeSpan.FromHours(10);
     }
 }

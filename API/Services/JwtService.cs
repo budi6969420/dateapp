@@ -55,7 +55,7 @@ public class JwtService : IJwtService
             issuer: m_configuration["Jwt:Issuer"],
             audience: m_configuration["Jwt:Audience"],
             claims: claims,
-            expires: DateTime.Now.AddHours(10),
+            expires: DateTime.Now.Add(GlobalConstants.JwtLifeSpan),
             signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);

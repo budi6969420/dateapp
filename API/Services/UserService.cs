@@ -21,7 +21,8 @@ namespace DateAppApi.Services
         {
             var user = await m_context.Users.FirstOrDefaultAsync(x => x.Username.Equals(username));
             if (user == null) throw new KeyNotFoundException("username not linked to account");
-            if (user.HashedPassword != PasswordHashingHelper.HashPassword(password)) throw new UnauthorizedAccessException();
+            var hashedPass = PasswordHashingHelper.HashPassword(password);
+            if (!user.HashedPassword.Equals(hashedPass)) throw new UnauthorizedAccessException();
             return user;
         }
 

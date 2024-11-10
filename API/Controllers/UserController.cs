@@ -32,7 +32,7 @@ namespace DateAppApi.Controllers
             return Ok(user.ToDto());
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             if (!TryAuthenticate(out _)) return Unauthorized();
