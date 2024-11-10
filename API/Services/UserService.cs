@@ -28,7 +28,7 @@ namespace DateAppApi.Services
 
         public async Task<User> RegisterAsync(string username, string password)
         {
-            var user = await m_context.Users.FirstOrDefaultAsync(x => x.Username.Equals(username));
+            var user = await m_context.Users.FirstOrDefaultAsync(x => x.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
             if (user != null) throw new BadHttpRequestException("username linked to account that already exists");
 
             var newUser = new User()
