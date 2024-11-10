@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DateAppApi.Migrations
 {
-    public partial class initializedcontext : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -80,9 +80,9 @@ namespace DateAppApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(1)", nullable: false),
-                    ProfilePictureId = table.Column<int>(type: "int", nullable: false),
+                    ProfilePictureId = table.Column<int>(type: "int", nullable: true),
                     TimeJoined = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HashedPassword = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -94,7 +94,7 @@ namespace DateAppApi.Migrations
                         column: x => x.ProfilePictureId,
                         principalTable: "Images",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateIndex(
@@ -126,7 +126,8 @@ namespace DateAppApi.Migrations
                 name: "IX_Users_ProfilePictureId",
                 table: "Users",
                 column: "ProfilePictureId",
-                unique: true);
+                unique: true,
+                filter: "[ProfilePictureId] IS NOT NULL");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_DateDateIdea_DateIdeas_DateIdeasId",

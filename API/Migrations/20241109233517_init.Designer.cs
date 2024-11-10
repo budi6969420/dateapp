@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DateAppApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241109202057_initialized-context")]
-    partial class initializedcontext
+    [Migration("20241109233517_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -126,7 +126,6 @@ namespace DateAppApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ProfilePictureId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<DateTime>("TimeJoined")
@@ -134,12 +133,14 @@ namespace DateAppApi.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProfilePictureId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[ProfilePictureId] IS NOT NULL");
 
                     b.ToTable("Users");
                 });
@@ -192,8 +193,9 @@ namespace DateAppApi.Migrations
             modelBuilder.Entity("DateAppApi.Models.Image", b =>
                 {
                     b.HasOne("DateAppApi.Models.Date", "PictureOfDate")
-                        .WithMany()
-                        .HasForeignKey("PictureOfDateId");
+                        .WithMany("Images")
+                        .HasForeignKey("PictureOfDateId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("PictureOfDate");
                 });
@@ -203,8 +205,7 @@ namespace DateAppApi.Migrations
                     b.HasOne("DateAppApi.Models.Image", "ProfilePicture")
                         .WithOne("ProfilePictureOfUser")
                         .HasForeignKey("DateAppApi.Models.User", "ProfilePictureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("ProfilePicture");
                 });
@@ -222,6 +223,11 @@ namespace DateAppApi.Migrations
                         .HasForeignKey("DatesPresentOnId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DateAppApi.Models.Date", b =>
+                {
+                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("DateAppApi.Models.Image", b =>

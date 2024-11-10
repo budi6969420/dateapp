@@ -8,7 +8,7 @@ namespace DateAppApi.DbContexts
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
@@ -24,83 +24,69 @@ namespace DateAppApi.DbContexts
             modelBuilder.Entity<User>(e =>
             {
                 e.HasKey(k => k.Id);
-                e.Property(p => p.Username)
-                    .IsRequired();
-                e.Property(p => p.Gender)
-                    .IsRequired();
-                e.Property(p => p.HashedPassword)
-                    .IsRequired();
-                e.Property(p => p.TimeJoined)
-                    .IsRequired();
+                e.Property(p => p.Username).IsRequired().HasMaxLength(100);
+                e.Property(p => p.Gender).IsRequired();
+                e.Property(p => p.HashedPassword).IsRequired();
+                e.Property(p => p.TimeJoined).IsRequired();
+
+                e.HasOne(u => u.ProfilePicture)
+                    .WithOne(i => i.ProfilePictureOfUser)
+                    .HasForeignKey<User>(u => u.ProfilePictureId)
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                e.HasMany(u => u.CreatedDateIdeas)
+                    .WithOne(d => d.CreatingUser)
+                    .HasForeignKey(d => d.CreatingUserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                e.HasMany(u => u.CreatedDates)
+                    .WithOne(d => d.CreatingUser)
+                    .HasForeignKey(d => d.CreatingUserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                e.HasMany(u => u.PartOfDates)
+                    .WithOne(d => d.OtherUser)
+                    .HasForeignKey(d => d.OtherUserId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<DateIdea>(e =>
             {
-                e.HasKey(p => p.Id);
-                e.Property(p => p.CreatingUserId)
-                    .IsRequired();
-                e.Property(p => p.CreatedDate)
-                    .IsRequired();
-                e.Property(p => p.Description)
-                    .IsRequired();
+                e.HasKey(d => d.Id);
+                e.Property(d => d.Description).IsRequired();
+                e.Property(d => d.CreatedDate).IsRequired();
+
+                e.HasMany(d => d.DatesPresentOn)
+                    .WithMany(d => d.DateIdeas);
             });
 
             modelBuilder.Entity<Date>(e =>
             {
-                e.HasKey(p => p.Id);
-                e.Property(p => p.CreatedDate)
-                    .IsRequired();
-                e.Property(p => p.DateStartDate)
-                    .IsRequired();
-                e.Property(p => p.DateEndDate)
-                    .IsRequired();
-                e.Property(p => p.CreatingUserId)
-                    .IsRequired();
-                e.Property(p => p.OtherUserId)
-                    .IsRequired();
+                e.HasKey(d => d.Id);
+                e.Property(d => d.CreatedDate).IsRequired();
+                e.Property(d => d.DateStartDate).IsRequired();
+                e.Property(d => d.DateEndDate).IsRequired();
+                e.Property(d => d.CreatingUserId).IsRequired();
+                e.Property(d => d.OtherUserId).IsRequired();
+
+                e.HasMany(d => d.DateIdeas)
+                    .WithMany(i => i.DatesPresentOn);
+
+                e.HasMany(d => d.Images)
+                    .WithOne(i => i.PictureOfDate)
+                    .HasForeignKey(i => i.PictureOfDateId)
+                    .OnDelete(DeleteBehavior.NoAction);
             });
 
             modelBuilder.Entity<Image>(e =>
             {
-                e.HasKey(p => p.Id);
-                e.Property(p => p.Data)
-                    .IsRequired();
-                e.Property(p => p.CreateDateTime)
-                    .IsRequired();
+                e.HasKey(i => i.Id);
+                e.Property(i => i.Data).IsRequired();
+                e.Property(i => i.CreateDateTime).IsRequired();
+                e.HasOne(i => i.PictureOfDate)
+                    .WithMany(d => d.Images)
+                    .HasForeignKey(i => i.PictureOfDateId);
             });
-
-            modelBuilder.Entity<User>()
-                .HasOne(e => e.ProfilePicture)
-                .WithOne(e => e.ProfilePictureOfUser)
-                .HasForeignKey<User>(e => e.ProfilePictureId);
-
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.CreatedDateIdeas)
-                .WithOne(e => e.CreatingUser)
-                .HasForeignKey(e => e.CreatingUserId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.CreatedDates)
-                .WithOne(e => e.CreatingUser)
-                .HasForeignKey(e => e.CreatingUserId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.PartOfDates)
-                .WithOne(e => e.OtherUser)
-                .HasForeignKey(e => e.OtherUserId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Date>()
-                .HasMany(e => e.DateIdeas)
-                .WithMany(e => e.DatesPresentOn);
-
-            modelBuilder.Entity<Date>()
-                .HasMany(e => e.Images)
-                .WithOne(e => e.PictureOfDate)
-                .HasForeignKey(e => e.PictureOfDateId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
