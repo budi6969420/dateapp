@@ -1,0 +1,12 @@
+.user-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .user-card-grid {
+    grid-template-columns: 1fr;
+  }
+}

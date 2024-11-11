@@ -1,0 +1,50 @@
+/* Basic styles */
+.notfound-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  background-color: #f7f3f9;
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+.notfound-title {
+  font-size: 6rem;
+  color: #ff6b6b;
+  margin: 0;
+}
+
+.notfound-message {
+  font-size: 2rem;
+  color: #555;
+}
+
+.notfound-submessage {
+  font-size: 1.2rem;
+  color: #888;
+}
+
+.home-button {
+  margin-top: 2rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #ff6b6b;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.home-button:hover {
+  background-color: #ff5252;
+  transform: scale(1.05);
+}
+
+.home-button:active {
+  background-color: #ff3b3b;
+  transform: scale(0.95);
+}

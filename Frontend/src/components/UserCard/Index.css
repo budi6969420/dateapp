@@ -1,0 +1,52 @@
+.card {
+  background-color: #fff;
+  border: 1px solid var(--secondary-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 15px;
+  text-align: center;
+}
+
+.user-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-card-content img {
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.user-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* Adds a gap between the username and gender icon */
+  color: var(--accent-color);
+  font-family: var(--font-secondary);
+  font-weight: bold;
+  margin-top: 10px;
+  text-decoration: none;
+  text-align: center;
+}
+
+.user-name:hover {
+  text-decoration: underline;
+  color: var(--accent-color);
+}
+
+.gender-icon {
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+}
+
+.male {
+  color: #3b5998;
+}
+
+.female {
+  color: #e91e63;
+}
