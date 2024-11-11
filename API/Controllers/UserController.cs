@@ -5,6 +5,7 @@ using DateAppApi.Core;
 using DateAppApi.DbContexts;
 using DateAppApi.Dtos;
 using DateAppApi.Dtos.User;
+using DateAppApi.Helpers;
 using DateAppApi.IServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -63,12 +64,31 @@ namespace DateAppApi.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
-            var user = await m_userService.RegisterAsync(registerDto.Username, registerDto.Password);
+            var user = await m_userService.RegisterAsync(registerDto.Username, registerDto.Password, registerDto.Gender);
             var token = m_jwtService.GenerateJwtToken(user);
             return Ok(new TokenDto()
             {
                 Token = token
             });
+        }
+
+        [HttpPost("image/{userId}")]
+        public async Task<IActionResult> AddProfilePicture(int userId, IFormFile file)
+        {
+            if (!TryAuthenticate(out _)) return Unauthorized();
+            if (GetId() != userId) return Unauthorized();
+            var imageData = await FormFileHelper.ToByteArrayAsync(file);
+            await m_userService.AddNewProfilePictureAsync(userId, imageData);
+            return Ok();
+        }
+
+        [HttpDelete("image/{userId}")]
+        public async Task<IActionResult> RemoveProfilePicture(int userId)
+        {
+            if (!TryAuthenticate(out _)) return Unauthorized();
+            if (GetId() != userId) return Unauthorized();
+            await m_userService.RemoveProfilePictureAsync(userId);
+            return Ok();
         }
 
         #region private fields and constants
