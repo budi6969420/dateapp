@@ -18,7 +18,7 @@ namespace DateAppApi.Controllers
             m_context = context;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             if (!TryAuthenticate(out _)) return Unauthorized();

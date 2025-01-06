@@ -127,6 +127,17 @@ namespace DateAppApi.Services
                 .Include(x => x.Images)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
+
+        public Task<IEnumerable<Date>> GetRandomDateAsync(int count)
+        {
+            var random = new Random();
+            return Task.FromResult(m_context.Dates.ToList().OrderBy(_ => random.Next()).Take(count));
+        }
+
+        public Task<IEnumerable<Date>> GetAllDatesAsync()
+        {
+            return Task.FromResult<IEnumerable<Date>>(m_context.Dates.ToList());
+        }
         #endregion
 
         private async Task AddImageToDateInternalAsync(Date date, byte[] imageData, bool saveChanged = true)

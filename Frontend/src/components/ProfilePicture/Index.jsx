@@ -7,7 +7,9 @@ const ProfilePicture = ({ userId, self, isClickable, size }) => {
   const navigate = useNavigate();
   let { fetchData } = useGlobalContext();
 
-  const [src, setSrc] = useState("");
+  const [src, setSrc] = useState(
+    "https://media.tenor.com/On7kvXhzml4AAAAi/loading-gif.gif"
+  );
   const [selfId, setSelfId] = useState();
 
   useEffect(() => {

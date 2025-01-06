@@ -19,13 +19,29 @@ namespace DateAppApi.Controllers
             m_dateService = dateService;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetDate(int id)
         {
             if (!TryAuthenticate(out _)) return Unauthorized();
             var dateIdea = await m_dateService.GetDateAsync(id);
             if (dateIdea == null) return NotFound();
             return Ok(dateIdea.ToDto());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllDate()
+        {
+            if (!TryAuthenticate(out _)) return Unauthorized();
+            var dates = await m_dateService.GetAllDatesAsync();
+            return Ok(dates.Select(x => x.ToDto()));
+        }
+
+        [HttpGet("random/{randomCount}")]
+        public async Task<IActionResult> GetRandom(int randomCount)
+        {
+            if (!TryAuthenticate(out _)) return Unauthorized();
+            var dates = await m_dateService.GetRandomDateAsync(randomCount);
+            return Ok(dates.Select(x => x.ToDto()));
         }
 
         [HttpPost]

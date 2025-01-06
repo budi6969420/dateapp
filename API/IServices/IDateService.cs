@@ -22,4 +22,6 @@ public interface IDateService
     Task AddDateIdeaToDateAsync(int dateId, int userId, int dateIdea);
     Task RemoveDateIdeaFromDateAsync(int dateId, int userId, int dateIdea);
     Task<Date?> GetDateAsync(int id);
+    Task<IEnumerable<Date>> GetRandomDateAsync(int count);
+    Task<IEnumerable<Date>> GetAllDatesAsync();
 }

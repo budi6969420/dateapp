@@ -6,6 +6,7 @@ import ProtectedRoute from "../ProtectedRoute/Index";
 import UsersPage from "../../pages/UsersPage/UsersPage";
 import UserPage from "../../pages/UserPage/UserPage";
 import NotFoundPage from "../../pages/NotFoundPage/Index";
+import DatesPage from "../../pages/DatesPage/Index";
 
 const AppRoutes = () => (
   <Router>
@@ -40,6 +41,14 @@ const AppRoutes = () => (
         element={
           <ProtectedRoute>
             <UsersPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/dates"
+        element={
+          <ProtectedRoute>
+            <DatesPage />
           </ProtectedRoute>
         }
       />
